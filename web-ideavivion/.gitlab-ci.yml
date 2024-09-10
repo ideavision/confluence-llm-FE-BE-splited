@@ -1,0 +1,53 @@
+image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/node:latest
+
+include:
+  - project: 'paysera/ci-templates'
+    file: 
+      - 'stages.yaml'
+      - 'build/kaniko-v2.yaml'
+      - 'deploy/webistrano.yaml'
+
+test:
+  stage: Test
+  script:
+    - cd src/web
+    - yarn test
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+
+.build-image:
+  extends: .kaniko-v2
+  needs: []
+  dependencies: []
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
+      exists:
+        - 'docker/${IMAGE_NAME}/Dockerfile'
+      when: always
+    - when: never
+
+build-node-image:
+  extends: .build-image
+  variables:
+    DOCKERFILE: 'src/Dockerfile'
+    IMAGE_NAME: 'payserai-frontend'
+
+build-nginx-image:
+  extends: .build-image
+  variables:
+    DOCKERFILE: 'nginx/Dockerfile'
+    IMAGE_NAME: 'nginx'
+
+deploy:
+  extends: .deploy
+  variables:
+    APPLICATION: payserai-frontend
+    STAGE: prod
+  needs:
+    - job: build-nginx-image
+    - job: build-node-image
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
+      when: on_success

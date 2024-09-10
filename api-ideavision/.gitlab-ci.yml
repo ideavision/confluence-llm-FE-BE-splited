@@ -1,0 +1,48 @@
+image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/python:3.11.4
+
+
+include:
+  - project: 'paysera/ci-templates'
+    file: 'python.yaml'
+  - project: 'paysera/ci-templates'
+    file: build/kaniko.yaml
+    
+
+safety:
+  allow_failure: true
+
+unittest:
+  stage: Test
+  before_script:
+    - pip install --upgrade pip
+    - pip install -r backend/requirements.txt
+  script:
+    - python3 -m unittest discover -v tests
+
+compare-coverage:
+  rules:
+    - when: never
+
+.build-image:
+  extends: .kaniko
+  needs: []
+  dependencies: []
+  rules:
+    - when: always
+
+build-backend-image:
+  extends: .build-image
+  variables:
+    DOCKERFILE: './backend/Dockerfile'
+    IMAGE_NAME: 'payserai-api'
+
+deploy:
+  extends: .deploy
+  variables:
+    GIT_STRATEGY: none
+    APPLICATION: payserai-api
+    STAGE: all
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: on_success
+    - when: never
