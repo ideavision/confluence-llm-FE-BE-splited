@@ -1,5 +1,5 @@
-FROM python:3.11.7-slim-bookworm
-
+# FROM python:3.11.7-slim-bookworm
+FROM gitlab.paysera.net/ai_rnd/dependency_proxy/containers/python:3.11.4
 # Install system dependencies
 # cmake needed for psycopg (postgres)
 # libpq-dev needed for psycopg (postgres)
@@ -14,7 +14,7 @@ RUN apt-get update && \
 
 # Install Python dependencies
 # Remove py which is pulled in by retry, py is not needed and is a CVE
-COPY ./requirements/default.txt /tmp/requirements.txt
+COPY ./backend/requirements/default.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r /tmp/requirements.txt && \
     pip uninstall -y py && \
     playwright install chromium && playwright install-deps chromium && \
@@ -39,8 +39,8 @@ COPY ./backend/alembic.ini /app/alembic.ini
 COPY ./backend/supervisord.conf /usr/etc/supervisord.conf
 
 # Create Vespa app zip
-WORKDIR /app/payserai/document_index/vespa/app_config
-RUN zip -r /app/payserai/vespa-app.zip .
+WORKDIR /app/backend/payserai/document_index/vespa/app_config
+RUN zip -r /app/backend/payserai/vespa-app.zip .
 WORKDIR /app
 
 ENV PYTHONPATH /app

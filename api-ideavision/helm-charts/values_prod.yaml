@@ -1,0 +1,13 @@
+config:
+  data:
+    ENV: prod
+    POSTGRES_HOST: knowledgebase-payserai.db.lan
+    POSTGRES_PORT: 5432
+    POSTGRES_DB: knowledgebase-payserai
+    POSTGRES_USER: knowledgebase-payserai
+    GRAYLOG_HOST: pay-graylog.paysera.lan
+    GRAYLOG_PORT: 12201
+
+secret:
+  encryptedData:
+    POSTGRES_PASSWORD: AgAoCV787uPj1ORzwRDJjEQHH34K5TjpnSLqxenHKeW9lj5uO+rQez7arGzFJBPH+DhLQydRxS60GyeJoa6rAvF+5PEEhoTjlhZ+ZxITGAlSNm/oaWnEDEbSlwz+Ri1oB4/6Abwwc1NAISOrFoVlI8RyxR/Ek2ivNKotUzlXyGnwD5anaZUxRVptB+5CocZnzC7DNvrZlpGmBJmpBKOpiTw+FjfXPlDm32rDPEdku/Ub6RfGUgL1YZ6nIB/ilYhOvM/BRXxz8x3RVz0Jf7/bO3WXulyQwAXFMwxLaIfvXWWES2r5NtxvM3qAfBauYiZD6iYIjKYGQ6agJHEHQnT9hjyFp8tcXFFu07zb1VOwmv16XCZ0tBbRvDoPO2kDBZqJ7IbB5Vszsv/xliW0JD4wC/+53fUx01f6ntCTB7Ixy4vK+S8F4FxGP9B9zZwhAITsws43Z+wxpkYjI9i3YoPwjn1ppxCjv+PjDT52H8+vf9z/4pLAehWhWn+za6kkWnWp1hX6he3fGVro4g8NZSU920EoWQS+jCLSnyKfBPM0OsqsKbDhz4EG5IYEit8VW2Oa96nufwPw97SpJM0G43uiRzF8EPkw5fJi1HxBIsIjxVpcZ2R7vX44grHt1RpNXgsxGRPi1neFMKG8T5PQ+nD4uuiXWwlnEkOaM+J36HbLtcxi/dviVWyybs8md0Pvc1uv495FG8K3wE8r1KJbBXfFkfsIIK6Q4ukZIhJIQXRsIYALpT0=

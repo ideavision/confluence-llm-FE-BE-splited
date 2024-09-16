@@ -1,0 +1,46 @@
+config:
+  data:
+    ENV: prod
+    CHANGE_CAUSE: init
+
+replicas: 1
+
+secret:
+  stringData:
+    POSTGRES_PASSWORD: ''
+
+image:
+  nginx:
+    repository: gitlab.paysera.net:5050/ai_rnd/app-payserai-api/nginx
+    tag: init
+
+  python:
+    repository: gitlab.paysera.net:5050/ai_rnd/app-payserai-api/backend
+    tag: init
+
+resources:
+  nginx:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 256Mi
+      cpu: 100m
+
+  python:
+    requests:
+      memory: 256Mi
+      cpu: 1000m
+    limits:
+      memory: 1Gi
+      cpu: 1000m
+
+modifyNfsVolumes:
+    enabled: false
+
+service:
+  enabled: true
+
+livenessProbe:
+  python:
+    initialDelaySeconds: 90
